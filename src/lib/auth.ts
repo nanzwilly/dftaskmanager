@@ -10,6 +10,7 @@ const COOKIE_NAME = "session";
 export interface SessionPayload {
   userId: number;
   role: "admin" | "user";
+  [key: string]: unknown;
 }
 
 export async function createSession(userId: number, role: "admin" | "user") {
