@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { tasks, users } from "@/lib/schema";
-import { eq, and, asc, desc, type SQL } from "drizzle-orm";
+import { eq, ne, and, asc, desc, type SQL } from "drizzle-orm";
 import { Navbar } from "@/components/navbar";
 import { TaskFilters } from "@/components/task-filters";
 import { Pagination } from "@/components/pagination";
@@ -55,6 +55,9 @@ export default async function DashboardPage({
   }
   if (statusFilter && ["todo", "in_progress", "done"].includes(statusFilter)) {
     conditions.push(eq(tasks.status, statusFilter as "todo" | "in_progress" | "done"));
+  } else {
+    // By default, hide completed tasks
+    conditions.push(ne(tasks.status, "done"));
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
