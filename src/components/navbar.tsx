@@ -26,6 +26,12 @@ export async function Navbar() {
             >
               Tasks
             </Link>
+            <Link
+              href="/notes"
+              className="text-sm text-white/80 hover:text-white"
+            >
+              Notes
+            </Link>
             {user.role === "admin" && (
               <Link
                 href="/admin/users"

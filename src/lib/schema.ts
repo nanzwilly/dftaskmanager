@@ -59,6 +59,14 @@ export const agendaItems = pgTable("agenda_items", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const notes = pgTable("notes", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull().default(""),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Task = typeof tasks.$inferSelect;
 export type Invitation = typeof invitations.$inferSelect;

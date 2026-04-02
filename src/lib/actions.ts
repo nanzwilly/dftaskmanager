@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "./db";
-import { users, tasks, invitations, passwordResetTokens, agendaDates, agendaItems } from "./schema";
+import { users, tasks, invitations, passwordResetTokens, agendaDates, agendaItems, notes } from "./schema";
 import { eq } from "drizzle-orm";
 import { hash, compare } from "bcryptjs";
 import { createSession, getSession, logout as logoutSession } from "./auth";
@@ -438,4 +438,34 @@ export async function deleteAgendaDateAction(formData: FormData) {
   await db.delete(agendaDates).where(eq(agendaDates.id, id));
 
   revalidatePath("/agenda");
+}
+
+// ─── Notes Actions ──────────────────────────────────────────
+
+export async function saveNoteAction(_prevState: unknown, formData: FormData) {
+  const session = await getSession();
+  if (!session) return { error: "You must be logged in" };
+
+  const content = formData.get("content") as string;
+
+  // Upsert: update existing note or create new one
+  const [existing] = await db
+    .select()
+    .from(notes)
+    .where(eq(notes.userId, session.userId))
+    .limit(1);
+
+  if (existing) {
+    await db
+      .update(notes)
+      .set({ content: content || "", updatedAt: new Date() })
+      .where(eq(notes.id, existing.id));
+  } else {
+    await db.insert(notes).values({
+      content: content || "",
+      userId: session.userId,
+    });
+  }
+
+  return { success: true };
 }
