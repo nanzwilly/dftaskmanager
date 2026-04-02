@@ -8,8 +8,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Task Manager",
-  description: "Simple task manager for teams",
+  title: "Meeting Manager",
+  description: "Simple meeting manager for teams",
 };
 
 export default function RootLayout({

@@ -18,7 +18,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-sm border">
-        <h1 className="text-2xl font-bold text-center mb-2">Task Manager</h1>
+        <h1 className="text-2xl font-bold text-center mb-2">Meeting Manager</h1>
         <p className="text-gray-500 text-center mb-8">Sign in to your account</p>
 
         <form action={formAction} className="space-y-4">

@@ -8,7 +8,7 @@ export async function sendPasswordResetEmail(
   resetUrl: string,
 ) {
   await resend.emails.send({
-    from: "TaskManager <onboarding@resend.dev>",
+    from: "MeetingManager <onboarding@resend.dev>",
     to: email,
     subject: "Reset your password",
     html: `
@@ -29,7 +29,7 @@ export async function sendPasswordResetEmail(
           If you didn't request this, you can safely ignore this email. Your password won't be changed.
         </p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-        <p style="color: #aaa; font-size: 11px;">TaskManager</p>
+        <p style="color: #aaa; font-size: 11px;">MeetingManager</p>
       </div>
     `,
   });
