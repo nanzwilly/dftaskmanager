@@ -51,9 +51,11 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
   const statusInfo = statuses.find((s) => s.value === task.status) || statuses[0];
 
   if (!editing) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const isOverdue =
       task.dueDate &&
-      new Date(task.dueDate) < new Date() &&
+      new Date(task.dueDate) < today &&
       task.status !== "done";
 
     return (
@@ -83,9 +85,8 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
           </td>
           <td className="px-4 py-3 text-sm">
             {task.dueDate ? (
-              <span className={isOverdue ? "text-red-600 font-medium" : "text-gray-600"}>
+              <span className={isOverdue ? "text-red-600" : "text-gray-600"}>
                 {new Date(task.dueDate).toLocaleDateString()}
-                {isOverdue && " (overdue)"}
               </span>
             ) : (
               <span className="text-gray-400">No date</span>

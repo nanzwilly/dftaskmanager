@@ -64,9 +64,11 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
     };
   }, [handleEscape]);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const isOverdue =
     task.dueDate &&
-    new Date(task.dueDate) < new Date() &&
+    new Date(task.dueDate) < today &&
     task.status !== "done";
 
   return (
@@ -256,9 +258,8 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
                   </label>
                   <p className="mt-1 text-sm">
                     {task.dueDate ? (
-                      <span className={isOverdue ? "text-red-600 font-medium" : "text-gray-700"}>
+                      <span className={isOverdue ? "text-red-600" : "text-gray-700"}>
                         {new Date(task.dueDate).toLocaleDateString()}
-                        {isOverdue && " (overdue)"}
                       </span>
                     ) : (
                       <span className="text-gray-400">No date</span>
