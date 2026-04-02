@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loginAction } from "@/lib/actions";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [state, formAction, pending] = useActionState(loginAction, null);
@@ -53,6 +54,15 @@ export default function LoginPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal outline-none"
               placeholder="Enter your password"
             />
+          </div>
+
+          <div className="flex justify-end">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-teal hover:text-teal-dark"
+            >
+              Forgot password?
+            </Link>
           </div>
 
           <button

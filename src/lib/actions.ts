@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "./db";
-import { users, tasks, invitations } from "./schema";
+import { users, tasks, invitations, passwordResetTokens } from "./schema";
 import { eq } from "drizzle-orm";
 import { hash, compare } from "bcryptjs";
 import { createSession, getSession, logout as logoutSession } from "./auth";
@@ -216,6 +216,100 @@ export async function changePasswordAction(_prevState: unknown, formData: FormDa
     .update(users)
     .set({ passwordHash: newHash })
     .where(eq(users.id, session.userId));
+
+  return { success: true };
+}
+
+// ─── Password Reset Actions ────────────────────────────────
+
+export async function forgotPasswordAction(_prevState: unknown, formData: FormData) {
+  const email = formData.get("email") as string;
+  if (!email) {
+    return { error: "Email is required" };
+  }
+
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email.toLowerCase().trim()))
+    .limit(1);
+
+  // Always return success for security (don't reveal if email exists)
+  if (!user) {
+    return { success: true };
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+  await db.insert(passwordResetTokens).values({
+    userId: user.id,
+    token,
+    expiresAt,
+  });
+
+  const { headers } = await import("next/headers");
+  const headerList = await headers();
+  const host = headerList.get("host") || "localhost:3000";
+  const protocol = host.startsWith("localhost") ? "http" : "https";
+  const resetUrl = `${protocol}://${host}/reset-password?token=${token}`;
+
+  try {
+    const { sendPasswordResetEmail } = await import("./email");
+    await sendPasswordResetEmail(user.email, user.name, resetUrl);
+  } catch {
+    return { error: "Failed to send email. Please try again." };
+  }
+
+  return { success: true };
+}
+
+export async function resetPasswordAction(_prevState: unknown, formData: FormData) {
+  const token = formData.get("token") as string;
+  const newPassword = formData.get("newPassword") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!token || !newPassword || !confirmPassword) {
+    return { error: "All fields are required" };
+  }
+
+  if (newPassword.length < 8) {
+    return { error: "Password must be at least 8 characters" };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { error: "Passwords do not match" };
+  }
+
+  const [resetToken] = await db
+    .select()
+    .from(passwordResetTokens)
+    .where(eq(passwordResetTokens.token, token))
+    .limit(1);
+
+  if (!resetToken) {
+    return { error: "Invalid or expired reset link" };
+  }
+
+  if (resetToken.used) {
+    return { error: "This reset link has already been used" };
+  }
+
+  if (new Date() > resetToken.expiresAt) {
+    return { error: "This reset link has expired. Please request a new one." };
+  }
+
+  const newHash = await hash(newPassword, 12);
+
+  await db
+    .update(users)
+    .set({ passwordHash: newHash })
+    .where(eq(users.id, resetToken.userId));
+
+  await db
+    .update(passwordResetTokens)
+    .set({ used: true })
+    .where(eq(passwordResetTokens.id, resetToken.id));
 
   return { success: true };
 }

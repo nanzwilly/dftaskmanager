@@ -33,6 +33,16 @@ export const invitations = pgTable("invitations", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Task = typeof tasks.$inferSelect;
 export type Invitation = typeof invitations.$inferSelect;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
