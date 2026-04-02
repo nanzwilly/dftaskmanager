@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, timestamp, boolean, integer, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, varchar, timestamp, boolean, integer, pgEnum, date } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["admin", "user"]);
 export const statusEnum = pgEnum("task_status", ["todo", "in_progress", "done"]);
@@ -42,7 +42,26 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const agendaDates = pgTable("agenda_dates", {
+  id: serial("id").primaryKey(),
+  date: date("date").notNull().unique(),
+  createdBy: integer("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const agendaItems = pgTable("agenda_items", {
+  id: serial("id").primaryKey(),
+  agendaDateId: integer("agenda_date_id").references(() => agendaDates.id, { onDelete: "cascade" }).notNull(),
+  text: varchar("text", { length: 500 }).notNull(),
+  checked: boolean("checked").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdBy: integer("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Task = typeof tasks.$inferSelect;
 export type Invitation = typeof invitations.$inferSelect;
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type AgendaDate = typeof agendaDates.$inferSelect;
+export type AgendaItem = typeof agendaItems.$inferSelect;

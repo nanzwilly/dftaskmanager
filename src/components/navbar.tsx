@@ -15,10 +15,16 @@ export async function Navbar() {
               TaskManager
             </Link>
             <Link
+              href="/agenda"
+              className="text-sm text-white/80 hover:text-white"
+            >
+              Agenda
+            </Link>
+            <Link
               href="/dashboard"
               className="text-sm text-white/80 hover:text-white"
             >
-              Dashboard
+              Tasks
             </Link>
             {user.role === "admin" && (
               <Link

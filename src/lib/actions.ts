@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "./db";
-import { users, tasks, invitations, passwordResetTokens } from "./schema";
+import { users, tasks, invitations, passwordResetTokens, agendaDates, agendaItems } from "./schema";
 import { eq } from "drizzle-orm";
 import { hash, compare } from "bcryptjs";
 import { createSession, getSession, logout as logoutSession } from "./auth";
@@ -347,4 +347,95 @@ export async function inviteUserAction(_prevState: unknown, formData: FormData) 
 
   revalidatePath("/admin/users");
   return { success: true, token };
+}
+
+// ─── Agenda Actions ─────────────────────────────────────────
+
+export async function addAgendaDateAction(_prevState: unknown, formData: FormData) {
+  const session = await getSession();
+  if (!session) return { error: "You must be logged in" };
+
+  const dateStr = formData.get("date") as string;
+  if (!dateStr) return { error: "Date is required" };
+
+  // Check for duplicate
+  const [existing] = await db
+    .select()
+    .from(agendaDates)
+    .where(eq(agendaDates.date, dateStr))
+    .limit(1);
+
+  if (existing) return { error: "This date already exists" };
+
+  await db.insert(agendaDates).values({
+    date: dateStr,
+    createdBy: session.userId,
+  });
+
+  revalidatePath("/agenda");
+  return { success: true };
+}
+
+export async function addAgendaItemAction(_prevState: unknown, formData: FormData) {
+  const session = await getSession();
+  if (!session) return { error: "You must be logged in" };
+
+  const agendaDateId = parseInt(formData.get("agendaDateId") as string);
+  const text = formData.get("text") as string;
+
+  if (!text?.trim()) return { error: "Item text is required" };
+
+  // Get next sort order
+  const items = await db
+    .select({ sortOrder: agendaItems.sortOrder })
+    .from(agendaItems)
+    .where(eq(agendaItems.agendaDateId, agendaDateId))
+    .orderBy(agendaItems.sortOrder);
+
+  const nextOrder = items.length > 0 ? items[items.length - 1].sortOrder + 1 : 0;
+
+  await db.insert(agendaItems).values({
+    agendaDateId,
+    text: text.trim(),
+    sortOrder: nextOrder,
+    createdBy: session.userId,
+  });
+
+  revalidatePath("/agenda");
+  return { success: true };
+}
+
+export async function toggleAgendaItemAction(formData: FormData) {
+  const session = await getSession();
+  if (!session) redirect("/login");
+
+  const id = parseInt(formData.get("id") as string);
+  const currentChecked = formData.get("checked") === "true";
+
+  await db
+    .update(agendaItems)
+    .set({ checked: !currentChecked })
+    .where(eq(agendaItems.id, id));
+
+  revalidatePath("/agenda");
+}
+
+export async function deleteAgendaItemAction(formData: FormData) {
+  const session = await getSession();
+  if (!session) redirect("/login");
+
+  const id = parseInt(formData.get("id") as string);
+  await db.delete(agendaItems).where(eq(agendaItems.id, id));
+
+  revalidatePath("/agenda");
+}
+
+export async function deleteAgendaDateAction(formData: FormData) {
+  const session = await getSession();
+  if (!session) redirect("/login");
+
+  const id = parseInt(formData.get("id") as string);
+  await db.delete(agendaDates).where(eq(agendaDates.id, id));
+
+  revalidatePath("/agenda");
 }
