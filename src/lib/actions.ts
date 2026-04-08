@@ -420,6 +420,24 @@ export async function toggleAgendaItemAction(formData: FormData) {
   revalidatePath("/agenda");
 }
 
+export async function editAgendaItemAction(_prevState: unknown, formData: FormData) {
+  const session = await getSession();
+  if (!session) return { error: "You must be logged in" };
+
+  const id = parseInt(formData.get("id") as string);
+  const text = formData.get("text") as string;
+
+  if (!text?.trim()) return { error: "Item text is required" };
+
+  await db
+    .update(agendaItems)
+    .set({ text: text.trim() })
+    .where(eq(agendaItems.id, id));
+
+  revalidatePath("/agenda");
+  return { success: true };
+}
+
 export async function deleteAgendaItemAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect("/login");

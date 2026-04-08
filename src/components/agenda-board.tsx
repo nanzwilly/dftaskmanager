@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useActionState } from "react";
 import {
   addAgendaDateAction,
   addAgendaItemAction,
   toggleAgendaItemAction,
+  editAgendaItemAction,
   deleteAgendaItemAction,
   deleteAgendaDateAction,
 } from "@/lib/actions";
@@ -102,6 +103,60 @@ function AddItemForm({ agendaDateId }: { agendaDateId: number }) {
 // ─── Checklist Item ─────────────────────────────────────────
 
 function ChecklistItem({ item }: { item: AgendaItem }) {
+  const [editing, setEditing] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const [, editAction, isEditPending] = useActionState(
+    async (_prev: unknown, formData: FormData) => {
+      const result = await editAgendaItemAction(undefined, formData);
+      if (result?.success) {
+        setEditing(false);
+        formRef.current?.reset();
+      }
+      return result;
+    },
+    null,
+  );
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-2 py-1.5">
+        <form ref={formRef} action={editAction} className="flex items-center gap-2 flex-1">
+          <input type="hidden" name="id" value={item.id} />
+          <input
+            name="text"
+            type="text"
+            defaultValue={item.text}
+            autoFocus
+            required
+            className="flex-1 text-sm border border-gray-200 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+          />
+          <button
+            type="submit"
+            disabled={isEditPending}
+            className="inline-flex items-center justify-center w-6 h-6 rounded text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors"
+            title="Save"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => setEditing(false)}
+            className="inline-flex items-center justify-center w-6 h-6 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            title="Cancel"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3 py-1.5 group">
       <form action={toggleAgendaItemAction} className="flex">
@@ -132,19 +187,32 @@ function ChecklistItem({ item }: { item: AgendaItem }) {
         {item.text}
       </span>
 
-      <form action={deleteAgendaItemAction} className="opacity-0 group-hover:opacity-100 transition-opacity">
-        <input type="hidden" name="id" value={item.id} />
+      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
-          type="submit"
-          className="inline-flex items-center justify-center w-6 h-6 rounded text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
-          title="Delete"
+          type="button"
+          onClick={() => setEditing(true)}
+          className="inline-flex items-center justify-center w-6 h-6 rounded text-gray-300 hover:text-teal hover:bg-gray-100 transition-colors"
+          title="Edit"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+            <path d="m15 5 4 4" />
           </svg>
         </button>
-      </form>
+        <form action={deleteAgendaItemAction}>
+          <input type="hidden" name="id" value={item.id} />
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center w-6 h-6 rounded text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+            title="Delete"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
