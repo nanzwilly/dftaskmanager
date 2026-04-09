@@ -79,7 +79,7 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
       <div className="absolute inset-0 bg-black/40" />
 
       <div
-        className="relative bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 overflow-hidden"
+        className="relative bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 max-h-[90vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {editing ? (
@@ -99,7 +99,7 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
               </button>
             </div>
 
-            <form ref={formRef} action={formAction} className="px-6 pb-6 space-y-4">
+            <form ref={formRef} action={formAction} className="px-6 pb-6 space-y-4 overflow-y-auto flex-1">
               <input type="hidden" name="id" value={task.id} />
 
               {state?.error && (
@@ -221,7 +221,7 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
               </button>
             </div>
 
-            <div className="px-6 py-4 space-y-4">
+            <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1">
               <div>
                 <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Description
