@@ -92,6 +92,9 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
               <span className="text-gray-400">No date</span>
             )}
           </td>
+          <td className="px-4 py-3 text-sm text-gray-500">
+            {new Date(task.createdAt).toLocaleDateString()}
+          </td>
           <td className="px-4 py-3">
             <div className="flex items-center gap-3">
               <button
@@ -140,7 +143,7 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
   // Edit mode
   return (
     <tr className="border-b border-gray-100 bg-teal-light/20">
-      <td colSpan={5} className="p-0">
+      <td colSpan={6} className="p-0">
         <form ref={formRef} action={formAction}>
           <input type="hidden" name="id" value={task.id} />
           <table className="w-full">

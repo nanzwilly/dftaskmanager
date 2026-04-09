@@ -95,6 +95,7 @@ export default async function DashboardPage({
         <SortableHeader label="Status" sortKey="status" {...headerProps} />
         <SortableHeader label="Owner" sortKey="owner" {...headerProps} />
         <SortableHeader label="Due Date" sortKey="dueDate" {...headerProps} />
+        <SortableHeader label="Created" sortKey="createdAt" {...headerProps} />
         <th className="px-4 py-3 font-medium">Actions</th>
       </tr>
     </thead>
@@ -117,7 +118,7 @@ export default async function DashboardPage({
               {tableHeader}
               <tbody>
                 <tr>
-                  <td colSpan={5} className="text-center py-10 text-gray-500">
+                  <td colSpan={6} className="text-center py-10 text-gray-500">
                     <p className="text-sm">
                       {ownerFilter || statusFilter
                         ? "No tasks match the filters."
