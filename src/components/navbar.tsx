@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { ProfileDropdown } from "./profile-dropdown";
+import { GlobalSearch } from "./global-search";
 
 export async function Navbar() {
   const user = await getCurrentUser();
@@ -42,7 +43,10 @@ export async function Navbar() {
             )}
           </div>
 
-          <ProfileDropdown name={user.name} role={user.role} />
+          <div className="flex items-center gap-4">
+            <GlobalSearch />
+            <ProfileDropdown name={user.name} role={user.role} />
+          </div>
         </div>
       </div>
     </nav>

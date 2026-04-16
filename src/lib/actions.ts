@@ -2,7 +2,7 @@
 
 import { db } from "./db";
 import { users, tasks, invitations, passwordResetTokens, agendaDates, agendaItems, notes } from "./schema";
-import { eq } from "drizzle-orm";
+import { eq, ilike, or } from "drizzle-orm";
 import { hash, compare } from "bcryptjs";
 import { createSession, getSession, logout as logoutSession } from "./auth";
 import { redirect } from "next/navigation";
@@ -486,4 +486,63 @@ export async function saveNoteAction(_prevState: unknown, formData: FormData) {
   }
 
   return { success: true };
+}
+
+// ─── Search Actions ─────────────────────────────────────────
+
+export async function globalSearchAction(query: string) {
+  const session = await getSession();
+  if (!session) return { tasks: [], agendaItems: [], notes: [] };
+
+  const q = query.trim();
+  if (!q || q.length < 2) return { tasks: [], agendaItems: [], notes: [] };
+
+  const pattern = `%${q}%`;
+
+  const taskResults = await db
+    .select({
+      id: tasks.id,
+      title: tasks.title,
+      status: tasks.status,
+      ownerName: users.name,
+    })
+    .from(tasks)
+    .leftJoin(users, eq(tasks.ownerId, users.id))
+    .where(or(ilike(tasks.title, pattern), ilike(tasks.description, pattern)))
+    .limit(5);
+
+  const agendaResults = await db
+    .select({
+      id: agendaItems.id,
+      text: agendaItems.text,
+      date: agendaDates.date,
+    })
+    .from(agendaItems)
+    .innerJoin(agendaDates, eq(agendaItems.agendaDateId, agendaDates.id))
+    .where(ilike(agendaItems.text, pattern))
+    .limit(5);
+
+  const noteResults = await db
+    .select({
+      id: notes.id,
+      content: notes.content,
+    })
+    .from(notes)
+    .where(ilike(notes.content, pattern))
+    .limit(3);
+
+  // Extract a snippet around the match for notes
+  const noteSnippets = noteResults.map((n) => {
+    const idx = n.content.toLowerCase().indexOf(q.toLowerCase());
+    const start = Math.max(0, idx - 40);
+    const end = Math.min(n.content.length, idx + q.length + 40);
+    const snippet = (start > 0 ? "..." : "") + n.content.slice(start, end).replace(/<[^>]*>/g, "") + (end < n.content.length ? "..." : "");
+    return { id: n.id, snippet };
+  });
+
+  return {
+    tasks: taskResults,
+    agendaItems: agendaResults,
+    notes: noteSnippets,
+  };
 }
