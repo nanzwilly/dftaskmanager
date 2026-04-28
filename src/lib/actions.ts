@@ -119,7 +119,7 @@ export async function createTaskAction(_prevState: unknown, formData: FormData) 
   await db.insert(tasks).values({
     title: title.trim(),
     description: description?.trim() || null,
-    dueDate: dueDate ? new Date(dueDate) : null,
+    dueDate: dueDate ? new Date(dueDate + "T12:00:00") : null,
     ownerId: ownerId ? parseInt(ownerId) : null,
     createdBy: session.userId,
     status: status && ["todo", "in_progress", "done"].includes(status) ? status : "todo",
@@ -152,7 +152,7 @@ export async function updateTaskAction(_prevState: unknown, formData: FormData) 
       title: title.trim(),
       description: description?.trim() || null,
       status,
-      dueDate: dueDate ? new Date(dueDate) : null,
+      dueDate: dueDate ? new Date(dueDate + "T12:00:00") : null,
       ownerId: ownerId ? parseInt(ownerId) : null,
       updatedAt: new Date(),
     })
