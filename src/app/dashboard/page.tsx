@@ -174,7 +174,7 @@ export default async function DashboardPage({
         {showCompletedColumn && (
           <SortableHeader label="Completed" sortKey="completedAt" {...headerProps} />
         )}
-        <th className="px-4 py-3 font-medium">Actions</th>
+        <th className="px-4 py-3 font-medium bg-teal">Actions</th>
       </tr>
     </thead>
   );

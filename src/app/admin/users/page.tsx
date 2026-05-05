@@ -32,10 +32,10 @@ export default async function AdminUsersPage() {
           <table className="w-full">
             <thead>
               <tr className="bg-teal text-white text-left text-sm">
-                <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Role</th>
-                <th className="px-4 py-3 font-medium">Joined</th>
+                <th className="px-4 py-3 font-medium bg-teal">Name</th>
+                <th className="px-4 py-3 font-medium bg-teal">Email</th>
+                <th className="px-4 py-3 font-medium bg-teal">Role</th>
+                <th className="px-4 py-3 font-medium bg-teal">Joined</th>
               </tr>
             </thead>
             <tbody>
@@ -74,9 +74,9 @@ export default async function AdminUsersPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-teal text-white text-left text-sm">
-                  <th className="px-4 py-3 font-medium">Email</th>
-                  <th className="px-4 py-3 font-medium">Invited</th>
-                  <th className="px-4 py-3 font-medium">Invite Link</th>
+                  <th className="px-4 py-3 font-medium bg-teal">Email</th>
+                  <th className="px-4 py-3 font-medium bg-teal">Invited</th>
+                  <th className="px-4 py-3 font-medium bg-teal">Invite Link</th>
                 </tr>
               </thead>
               <tbody>
