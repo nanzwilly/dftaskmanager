@@ -1,11 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f5f5;
-  --foreground: #333333;
-  --teal: #00838f;
-  --teal-dark: #006064;
-  --teal-light: #e0f7fa;
+  --background: #f8fafc;
+  --foreground: #0a0a0a;
+  /* Brand colors mapped from Decision Foundry */
+  /* Variable names kept as `teal-*` so existing utility classes still work,
+     but the values are now DF brand blue. */
+  --teal: #1447e6;
+  --teal-dark: #0d3bc5;
+  --teal-light: #dbeafe;
+  --df-navy: #101828;
+  --df-cyan: #00b8db;
+  --df-orange: #e17100;
 }
 
 @theme inline {
@@ -14,14 +20,16 @@
   --color-teal: var(--teal);
   --color-teal-dark: var(--teal-dark);
   --color-teal-light: var(--teal-light);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-df-navy: var(--df-navy);
+  --color-df-cyan: var(--df-cyan);
+  --color-df-orange: var(--df-orange);
+  --font-sans: var(--font-poppins);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 /* Tiptap editor prose styles */
