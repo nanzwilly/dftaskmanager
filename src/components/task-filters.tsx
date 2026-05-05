@@ -6,14 +6,16 @@ import { useCallback } from "react";
 type TaskFiltersProps = {
   owners: { id: number; name: string }[];
   statuses: { value: string; label: string }[];
+  dateRanges?: { value: string; label: string }[];
 };
 
-export function TaskFilters({ owners, statuses }: TaskFiltersProps) {
+export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentOwner = searchParams.get("owner") || "";
   const currentStatus = searchParams.get("status") || "";
+  const currentDateRange = searchParams.get("dateRange") || "";
 
   const updateFilter = useCallback(
     (key: string, value: string) => {
@@ -33,7 +35,8 @@ export function TaskFilters({ owners, statuses }: TaskFiltersProps) {
     router.push("/dashboard");
   }, [router]);
 
-  const hasFilters = currentOwner || currentStatus;
+  const hasFilters = currentOwner || currentStatus || currentDateRange;
+  const dateRangeLabel = currentStatus === "done" ? "Completed" : "Created";
 
   return (
     <div className="flex items-center gap-3 mb-4 flex-wrap">
@@ -64,6 +67,22 @@ export function TaskFilters({ owners, statuses }: TaskFiltersProps) {
           </option>
         ))}
       </select>
+
+      {dateRanges.length > 0 && (
+        <select
+          value={currentDateRange}
+          onChange={(e) => updateFilter("dateRange", e.target.value)}
+          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+          title={`Filter by ${dateRangeLabel} date`}
+        >
+          <option value="">All Time</option>
+          {dateRanges.map((r) => (
+            <option key={r.value} value={r.value}>
+              {r.label}
+            </option>
+          ))}
+        </select>
+      )}
 
       {hasFilters && (
         <button

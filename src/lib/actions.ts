@@ -116,13 +116,17 @@ export async function createTaskAction(_prevState: unknown, formData: FormData) 
     return { error: "Title is required" };
   }
 
+  const finalStatus =
+    status && ["todo", "in_progress", "done"].includes(status) ? status : "todo";
+
   await db.insert(tasks).values({
     title: title.trim(),
     description: description?.trim() || null,
     dueDate: dueDate ? new Date(dueDate + "T12:00:00") : null,
     ownerId: ownerId ? parseInt(ownerId) : null,
     createdBy: session.userId,
-    status: status && ["todo", "in_progress", "done"].includes(status) ? status : "todo",
+    status: finalStatus,
+    completedAt: finalStatus === "done" ? new Date() : null,
   });
 
   revalidatePath("/dashboard");
@@ -146,6 +150,23 @@ export async function updateTaskAction(_prevState: unknown, formData: FormData) 
     return { error: "Title is required" };
   }
 
+  // Look up the existing task to detect status changes
+  const [existing] = await db
+    .select({ status: tasks.status, completedAt: tasks.completedAt })
+    .from(tasks)
+    .where(eq(tasks.id, id))
+    .limit(1);
+
+  // Set completedAt when transitioning to done; clear when leaving done
+  let completedAt: Date | null | undefined = undefined;
+  if (existing) {
+    if (status === "done" && existing.status !== "done") {
+      completedAt = new Date();
+    } else if (status !== "done" && existing.status === "done") {
+      completedAt = null;
+    }
+  }
+
   await db
     .update(tasks)
     .set({
@@ -155,6 +176,7 @@ export async function updateTaskAction(_prevState: unknown, formData: FormData) 
       dueDate: dueDate ? new Date(dueDate + "T12:00:00") : null,
       ownerId: ownerId ? parseInt(ownerId) : null,
       updatedAt: new Date(),
+      ...(completedAt !== undefined && { completedAt }),
     })
     .where(eq(tasks.id, id));
 

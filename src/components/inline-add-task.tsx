@@ -7,9 +7,10 @@ import { createTaskAction } from "@/lib/actions";
 type InlineAddTaskProps = {
   owners: { id: number; name: string }[];
   statuses: { value: string; label: string }[];
+  extraColumns?: number;
 };
 
-export function InlineAddTask({ owners, statuses }: InlineAddTaskProps) {
+export function InlineAddTask({ owners, statuses, extraColumns = 0 }: InlineAddTaskProps) {
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -28,7 +29,7 @@ export function InlineAddTask({ owners, statuses }: InlineAddTaskProps) {
   if (!open) {
     return (
       <tr>
-        <td colSpan={6} className="px-4 py-2">
+        <td colSpan={6 + extraColumns} className="px-4 py-2">
           <button
             onClick={() => setOpen(true)}
             className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-teal transition-colors"
@@ -43,7 +44,7 @@ export function InlineAddTask({ owners, statuses }: InlineAddTaskProps) {
 
   return (
     <tr className="border-t border-gray-100 bg-teal-light/20">
-      <td colSpan={6} className="p-0">
+      <td colSpan={6 + extraColumns} className="p-0">
         <form ref={formRef} action={formAction}>
           <table className="w-full">
             <tbody>

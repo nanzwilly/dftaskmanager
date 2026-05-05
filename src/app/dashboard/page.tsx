@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { tasks, users } from "@/lib/schema";
-import { eq, ne, and, asc, desc, type SQL } from "drizzle-orm";
+import { eq, ne, and, gte, lte, asc, desc, type SQL } from "drizzle-orm";
 import { Navbar } from "@/components/navbar";
 import { TaskFilters } from "@/components/task-filters";
 import { Pagination } from "@/components/pagination";
@@ -25,7 +25,44 @@ const SORT_COLUMNS = {
   owner: users.name,
   dueDate: tasks.dueDate,
   createdAt: tasks.createdAt,
+  completedAt: tasks.completedAt,
 } as const;
+
+const dateRangeOptions = [
+  { value: "thisWeek", label: "This Week" },
+  { value: "lastWeek", label: "Last Week" },
+  { value: "last7days", label: "Last 7 Days" },
+];
+
+function getDateRange(range: string): { start: Date; end: Date } | null {
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if (range === "last7days") {
+    const start = new Date(startOfDay);
+    start.setDate(start.getDate() - 7);
+    return { start, end: new Date(startOfDay.getTime() + 86400000) };
+  }
+
+  // For week-based ranges, use Sunday as start of week
+  const dayOfWeek = startOfDay.getDay(); // 0 = Sunday
+  const startOfThisWeek = new Date(startOfDay);
+  startOfThisWeek.setDate(startOfThisWeek.getDate() - dayOfWeek);
+
+  if (range === "thisWeek") {
+    const end = new Date(startOfThisWeek);
+    end.setDate(end.getDate() + 7);
+    return { start: startOfThisWeek, end };
+  }
+
+  if (range === "lastWeek") {
+    const start = new Date(startOfThisWeek);
+    start.setDate(start.getDate() - 7);
+    return { start, end: startOfThisWeek };
+  }
+
+  return null;
+}
 
 type SortKey = keyof typeof SORT_COLUMNS;
 
@@ -37,12 +74,15 @@ export default async function DashboardPage({
   const params = await searchParams;
   const ownerFilter = typeof params.owner === "string" ? params.owner : "";
   const statusFilter = typeof params.status === "string" ? params.status : "";
+  const dateRangeFilter = typeof params.dateRange === "string" ? params.dateRange : "";
   const currentPage = Math.max(1, parseInt(typeof params.page === "string" ? params.page : "1", 10) || 1);
 
   const sortParam = typeof params.sort === "string" ? params.sort : "dueDate";
   const dirParam = typeof params.dir === "string" ? params.dir : "asc";
   const sortKey: SortKey = sortParam in SORT_COLUMNS ? (sortParam as SortKey) : "dueDate";
   const sortDir = dirParam === "asc" ? "asc" : "desc";
+
+  const showCompletedColumn = statusFilter === "done";
 
   const allUsers = await db
     .select({ id: users.id, name: users.name })
@@ -60,6 +100,16 @@ export default async function DashboardPage({
     conditions.push(ne(tasks.status, "done"));
   }
 
+  // Date range filter — applies to created date for active tasks, completed date for completed view
+  if (dateRangeFilter) {
+    const range = getDateRange(dateRangeFilter);
+    if (range) {
+      const dateColumn = showCompletedColumn ? tasks.completedAt : tasks.createdAt;
+      conditions.push(gte(dateColumn, range.start));
+      conditions.push(lte(dateColumn, range.end));
+    }
+  }
+
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
   const sortColumn = SORT_COLUMNS[sortKey];
   const orderByClause = sortDir === "asc" ? asc(sortColumn) : desc(sortColumn);
@@ -72,6 +122,7 @@ export default async function DashboardPage({
       status: tasks.status,
       dueDate: tasks.dueDate,
       createdAt: tasks.createdAt,
+      completedAt: tasks.completedAt,
       ownerName: users.name,
       ownerId: tasks.ownerId,
     })
@@ -88,6 +139,8 @@ export default async function DashboardPage({
 
   const headerProps = { currentSort: sortKey, currentDir: sortDir };
 
+  const totalColumns = showCompletedColumn ? 7 : 6;
+
   const tableHeader = (
     <thead>
       <tr className="bg-teal text-white text-left text-sm">
@@ -96,6 +149,9 @@ export default async function DashboardPage({
         <SortableHeader label="Owner" sortKey="owner" {...headerProps} />
         <SortableHeader label="Due Date" sortKey="dueDate" {...headerProps} />
         <SortableHeader label="Created" sortKey="createdAt" {...headerProps} />
+        {showCompletedColumn && (
+          <SortableHeader label="Completed" sortKey="completedAt" {...headerProps} />
+        )}
         <th className="px-4 py-3 font-medium">Actions</th>
       </tr>
     </thead>
@@ -110,7 +166,7 @@ export default async function DashboardPage({
           <CreateTaskModal owners={allUsers} />
         </div>
 
-        <TaskFilters owners={allUsers} statuses={filterStatusOptions} />
+        <TaskFilters owners={allUsers} statuses={filterStatusOptions} dateRanges={dateRangeOptions} />
 
         {allFiltered.length === 0 ? (
           <div className="bg-white rounded-lg overflow-hidden shadow-sm">
@@ -118,7 +174,7 @@ export default async function DashboardPage({
               {tableHeader}
               <tbody>
                 <tr>
-                  <td colSpan={6} className="text-center py-10 text-gray-500">
+                  <td colSpan={totalColumns} className="text-center py-10 text-gray-500">
                     <p className="text-sm">
                       {ownerFilter || statusFilter
                         ? "No tasks match the filters."
@@ -126,7 +182,7 @@ export default async function DashboardPage({
                     </p>
                   </td>
                 </tr>
-                <InlineAddTask owners={allUsers} statuses={filterStatusOptions} />
+                <InlineAddTask owners={allUsers} statuses={filterStatusOptions} extraColumns={showCompletedColumn ? 1 : 0} />
               </tbody>
             </table>
           </div>
@@ -142,9 +198,10 @@ export default async function DashboardPage({
                     owners={allUsers}
                     statuses={statusOptions}
                     rowIndex={i}
+                    showCompletedColumn={showCompletedColumn}
                   />
                 ))}
-                <InlineAddTask owners={allUsers} statuses={filterStatusOptions} />
+                <InlineAddTask owners={allUsers} statuses={filterStatusOptions} extraColumns={showCompletedColumn ? 1 : 0} />
               </tbody>
             </table>
 

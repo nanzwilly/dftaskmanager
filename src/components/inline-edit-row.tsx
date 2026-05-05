@@ -13,6 +13,7 @@ type TaskData = {
   status: string;
   dueDate: Date | null;
   createdAt: Date;
+  completedAt: Date | null;
   ownerName: string | null;
   ownerId: number | null;
 };
@@ -24,6 +25,7 @@ type InlineEditRowProps = {
   owners: { id: number; name: string }[];
   statuses: StatusOption[];
   rowIndex: number;
+  showCompletedColumn?: boolean;
 };
 
 function formatDateForInput(date: Date | null): string {
@@ -32,7 +34,7 @@ function formatDateForInput(date: Date | null): string {
   return d.toISOString().split("T")[0];
 }
 
-export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRowProps) {
+export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedColumn = false }: InlineEditRowProps) {
   const [editing, setEditing] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -95,6 +97,11 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
           <td className="px-4 py-3 text-sm text-gray-500">
             {new Date(task.createdAt).toLocaleDateString()}
           </td>
+          {showCompletedColumn && (
+            <td className="px-4 py-3 text-sm text-gray-500">
+              {task.completedAt ? new Date(task.completedAt).toLocaleDateString() : "—"}
+            </td>
+          )}
           <td className="px-4 py-3">
             <div className="flex items-center gap-3">
               <button
@@ -143,7 +150,7 @@ export function InlineEditRow({ task, owners, statuses, rowIndex }: InlineEditRo
   // Edit mode
   return (
     <tr className="border-b border-gray-100 bg-teal-light/20">
-      <td colSpan={6} className="p-0">
+      <td colSpan={showCompletedColumn ? 7 : 6} className="p-0">
         <form ref={formRef} action={formAction}>
           <input type="hidden" name="id" value={task.id} />
           <table className="w-full">
