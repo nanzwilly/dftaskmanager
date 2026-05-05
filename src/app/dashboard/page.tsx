@@ -122,13 +122,13 @@ export default async function DashboardPage({
     conditions.push(ne(tasks.status, "done"));
   }
 
-  // Date range filter — applies to created date for active tasks, completed date for completed view
-  if (dateRangeFilter) {
+  // Date range filter — only applies when filtering by Completed status,
+  // and filters by the completedAt timestamp.
+  if (dateRangeFilter && showCompletedColumn) {
     const range = getDateRange(dateRangeFilter, dateFrom, dateTo);
     if (range) {
-      const dateColumn = showCompletedColumn ? tasks.completedAt : tasks.createdAt;
-      conditions.push(gte(dateColumn, range.start));
-      conditions.push(lte(dateColumn, range.end));
+      conditions.push(gte(tasks.completedAt, range.start));
+      conditions.push(lte(tasks.completedAt, range.end));
     }
   }
 

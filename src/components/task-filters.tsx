@@ -27,6 +27,13 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
       } else {
         params.delete(key);
       }
+      // When changing status away from Completed, clear the date range filter
+      // since it's based on the completed date and only meaningful then.
+      if (key === "status" && value !== "done") {
+        params.delete("dateRange");
+        params.delete("dateFrom");
+        params.delete("dateTo");
+      }
       params.delete("page");
       router.push(`/dashboard?${params.toString()}`);
     },
@@ -89,7 +96,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
         ))}
       </select>
 
-      {dateRanges.length > 0 && (
+      {dateRanges.length > 0 && currentStatus === "done" && (
         <>
           <select
             value={currentDateRange}
