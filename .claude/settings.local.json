@@ -1,7 +1,39 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Bash(npm install:*)",
+      "mcp__Neon__create_project",
+      "Bash(npx drizzle-kit:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx next:*)",
+      "Bash(npx tsc:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 35180 //F)",
+      "Bash(node -e \":*)",
+      "mcp__Neon__list_projects",
+      "mcp__Neon__run_sql",
+      "Bash(node -e \"const bcrypt = require\\(''bcryptjs''\\); bcrypt.hash\\(''Nancy@2026'', 12\\).then\\(h => console.log\\(h\\)\\);\")",
+      "Bash(node -e \"const bcrypt = require\\(''bcryptjs''\\); Promise.all\\([bcrypt.hash\\(''Manisha@2026'', 12\\), bcrypt.hash\\(''Rajeesh@2026'', 12\\)]\\).then\\(\\([h1, h2]\\) => console.log\\(JSON.stringify\\({manisha: h1, rajeesh: h2}\\)\\)\\)\")",
+      "mcp__Neon__run_sql_transaction",
+      "Bash(gh repo:*)",
+      "Bash(where gh:*)",
+      "Bash(where vercel:*)",
+      "Bash(npx vercel:*)",
+      "Bash(vercel --yes --prod)",
+      "Bash(vercel env:*)",
+      "Bash(vercel --prod)",
+      "Bash(npx kill-port:*)",
+      "Bash(node -e \"const bcrypt = require\\(''bcryptjs''\\); bcrypt.hash\\(''Nancy@2026'', 12\\).then\\(h => console.log\\(h\\)\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "WebFetch(domain:decisionfoundry.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer"
     ]
   }
 }
