@@ -32,16 +32,36 @@ const dateRangeOptions = [
   { value: "thisWeek", label: "This Week" },
   { value: "lastWeek", label: "Last Week" },
   { value: "last7days", label: "Last 7 Days" },
+  { value: "thisMonth", label: "This Month" },
+  { value: "custom", label: "Custom..." },
 ];
 
-function getDateRange(range: string): { start: Date; end: Date } | null {
+function getDateRange(
+  range: string,
+  customFrom?: string,
+  customTo?: string,
+): { start: Date; end: Date } | null {
   const now = new Date();
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if (range === "custom") {
+    if (!customFrom || !customTo) return null;
+    const start = new Date(customFrom + "T00:00:00");
+    const end = new Date(customTo + "T00:00:00");
+    end.setDate(end.getDate() + 1); // include the end day
+    return { start, end };
+  }
 
   if (range === "last7days") {
     const start = new Date(startOfDay);
     start.setDate(start.getDate() - 7);
     return { start, end: new Date(startOfDay.getTime() + 86400000) };
+  }
+
+  if (range === "thisMonth") {
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    return { start, end };
   }
 
   // For week-based ranges, use Sunday as start of week
@@ -75,6 +95,8 @@ export default async function DashboardPage({
   const ownerFilter = typeof params.owner === "string" ? params.owner : "";
   const statusFilter = typeof params.status === "string" ? params.status : "";
   const dateRangeFilter = typeof params.dateRange === "string" ? params.dateRange : "";
+  const dateFrom = typeof params.dateFrom === "string" ? params.dateFrom : "";
+  const dateTo = typeof params.dateTo === "string" ? params.dateTo : "";
   const currentPage = Math.max(1, parseInt(typeof params.page === "string" ? params.page : "1", 10) || 1);
 
   const sortParam = typeof params.sort === "string" ? params.sort : "dueDate";
@@ -102,7 +124,7 @@ export default async function DashboardPage({
 
   // Date range filter — applies to created date for active tasks, completed date for completed view
   if (dateRangeFilter) {
-    const range = getDateRange(dateRangeFilter);
+    const range = getDateRange(dateRangeFilter, dateFrom, dateTo);
     if (range) {
       const dateColumn = showCompletedColumn ? tasks.completedAt : tasks.createdAt;
       conditions.push(gte(dateColumn, range.start));

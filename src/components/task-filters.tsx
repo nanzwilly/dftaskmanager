@@ -16,6 +16,8 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
   const currentOwner = searchParams.get("owner") || "";
   const currentStatus = searchParams.get("status") || "";
   const currentDateRange = searchParams.get("dateRange") || "";
+  const currentDateFrom = searchParams.get("dateFrom") || "";
+  const currentDateTo = searchParams.get("dateTo") || "";
 
   const updateFilter = useCallback(
     (key: string, value: string) => {
@@ -24,6 +26,25 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
         params.set(key, value);
       } else {
         params.delete(key);
+      }
+      params.delete("page");
+      router.push(`/dashboard?${params.toString()}`);
+    },
+    [router, searchParams],
+  );
+
+  const updateDateRange = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set("dateRange", value);
+      } else {
+        params.delete("dateRange");
+      }
+      // Clear custom dates when switching to a non-custom preset or clearing
+      if (value !== "custom") {
+        params.delete("dateFrom");
+        params.delete("dateTo");
       }
       params.delete("page");
       router.push(`/dashboard?${params.toString()}`);
@@ -69,19 +90,41 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
       </select>
 
       {dateRanges.length > 0 && (
-        <select
-          value={currentDateRange}
-          onChange={(e) => updateFilter("dateRange", e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
-          title={`Filter by ${dateRangeLabel} date`}
-        >
-          <option value="">All Time</option>
-          {dateRanges.map((r) => (
-            <option key={r.value} value={r.value}>
-              {r.label}
-            </option>
-          ))}
-        </select>
+        <>
+          <select
+            value={currentDateRange}
+            onChange={(e) => updateDateRange(e.target.value)}
+            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+            title={`Filter by ${dateRangeLabel} date`}
+          >
+            <option value="">All Time</option>
+            {dateRanges.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+
+          {currentDateRange === "custom" && (
+            <div className="flex items-center gap-2">
+              <input
+                type="date"
+                value={currentDateFrom}
+                onChange={(e) => updateFilter("dateFrom", e.target.value)}
+                className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+                title="From"
+              />
+              <span className="text-xs text-gray-400">to</span>
+              <input
+                type="date"
+                value={currentDateTo}
+                onChange={(e) => updateFilter("dateTo", e.target.value)}
+                className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+                title="To"
+              />
+            </div>
+          )}
+        </>
       )}
 
       {hasFilters && (
