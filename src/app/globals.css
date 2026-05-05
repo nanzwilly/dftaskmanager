@@ -6,8 +6,8 @@
   /* Brand colors mapped from Decision Foundry */
   /* Variable names kept as `teal-*` so existing utility classes still work,
      but the values are now DF brand blue. */
-  --teal: #1447e6;
-  --teal-dark: #0d3bc5;
+  --teal: #1e3a8a;
+  --teal-dark: #172554;
   --teal-light: #dbeafe;
   --df-navy: #101828;
   --df-cyan: #00b8db;
