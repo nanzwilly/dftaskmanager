@@ -163,10 +163,12 @@ export default async function DashboardPage({
 
   const totalColumns = showCompletedColumn ? 7 : 6;
 
+  const taskColWidth = showCompletedColumn ? "28%" : "35%";
+
   const tableHeader = (
     <thead>
       <tr className="bg-teal text-white text-left text-sm">
-        <SortableHeader label="Task" sortKey="title" width="35%" {...headerProps} />
+        <SortableHeader label="Task" sortKey="title" width={taskColWidth} {...headerProps} />
         <SortableHeader label="Status" sortKey="status" {...headerProps} />
         <SortableHeader label="Owner" sortKey="owner" {...headerProps} />
         <SortableHeader label="Due Date" sortKey="dueDate" {...headerProps} />
@@ -174,7 +176,7 @@ export default async function DashboardPage({
         {showCompletedColumn && (
           <SortableHeader label="Completed" sortKey="completedAt" {...headerProps} />
         )}
-        <th className="px-4 py-3 font-medium bg-teal">Actions</th>
+        <th className="px-4 py-3 font-medium bg-teal whitespace-nowrap">Actions</th>
       </tr>
     </thead>
   );

@@ -71,7 +71,7 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
           <td className="px-4 py-3">
             <button
               onClick={() => setShowDetail(true)}
-              className="font-medium text-gray-800 hover:text-teal transition-colors text-left"
+              className="text-sm font-medium text-gray-800 hover:text-teal transition-colors text-left"
             >
               {task.title}
             </button>
@@ -103,7 +103,7 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
               {task.completedAt ? formatDate(task.completedAt) : "—"}
             </td>
           )}
-          <td className="px-4 py-3">
+          <td className="px-4 py-3 whitespace-nowrap">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setEditing(true)}
