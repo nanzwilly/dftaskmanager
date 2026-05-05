@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useActionState } from "react";
 import { updateTaskAction, deleteTaskAction } from "@/lib/actions";
+import { formatDate } from "@/lib/format";
 import { TaskDetailModal } from "./task-detail-modal";
 
 type TaskData = {
@@ -88,18 +89,18 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
           <td className="px-4 py-3 text-sm">
             {task.dueDate ? (
               <span className={isOverdue ? "text-red-600" : "text-gray-600"}>
-                {new Date(task.dueDate).toLocaleDateString()}
+                {formatDate(task.dueDate)}
               </span>
             ) : (
               <span className="text-gray-400">No date</span>
             )}
           </td>
           <td className="px-4 py-3 text-sm text-gray-500">
-            {new Date(task.createdAt).toLocaleDateString()}
+            {formatDate(task.createdAt)}
           </td>
           {showCompletedColumn && (
             <td className="px-4 py-3 text-sm text-gray-500">
-              {task.completedAt ? new Date(task.completedAt).toLocaleDateString() : "—"}
+              {task.completedAt ? formatDate(task.completedAt) : "—"}
             </td>
           )}
           <td className="px-4 py-3">

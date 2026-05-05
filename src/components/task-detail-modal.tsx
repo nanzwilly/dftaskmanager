@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useActionState } from "react";
 import { updateTaskAction, deleteTaskAction } from "@/lib/actions";
+import { formatDate } from "@/lib/format";
 
 type TaskData = {
   id: number;
@@ -259,7 +260,7 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
                   <p className="mt-1 text-sm">
                     {task.dueDate ? (
                       <span className={isOverdue ? "text-red-600" : "text-gray-700"}>
-                        {new Date(task.dueDate).toLocaleDateString()}
+                        {formatDate(task.dueDate)}
                       </span>
                     ) : (
                       <span className="text-gray-400">No date</span>
@@ -271,7 +272,7 @@ export function TaskDetailModal({ task, statusInfo, owners, onClose }: TaskDetai
                     Created
                   </label>
                   <p className="mt-1 text-sm text-gray-700">
-                    {new Date(task.createdAt).toLocaleDateString()}
+                    {formatDate(task.createdAt)}
                   </p>
                 </div>
               </div>

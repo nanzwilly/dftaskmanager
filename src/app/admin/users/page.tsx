@@ -3,6 +3,7 @@ import { users, invitations } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { Navbar } from "@/components/navbar";
 import { InviteForm } from "./invite-form";
+import { formatDate } from "@/lib/format";
 
 export default async function AdminUsersPage() {
   const allUsers = await db.select().from(users).orderBy(users.createdAt);
@@ -60,7 +61,7 @@ export default async function AdminUsersPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {new Date(user.createdAt).toLocaleDateString()}
+                    {formatDate(user.createdAt)}
                   </td>
                 </tr>
               ))}
@@ -89,7 +90,7 @@ export default async function AdminUsersPage() {
                   >
                     <td className="px-4 py-3 text-sm text-gray-800">{invite.email}</td>
                     <td className="px-4 py-3 text-sm text-gray-600">
-                      {new Date(invite.createdAt).toLocaleDateString()}
+                      {formatDate(invite.createdAt)}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-500 font-mono text-xs">
                       /register?token={invite.token}&email={invite.email}
