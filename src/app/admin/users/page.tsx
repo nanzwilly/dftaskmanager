@@ -32,11 +32,11 @@ export default async function AdminUsersPage() {
         <div className="bg-white rounded-lg overflow-hidden shadow-sm mb-6">
           <table className="w-full">
             <thead>
-              <tr className="bg-teal text-white text-left text-xs uppercase tracking-wider">
-                <th className="px-4 py-2 font-medium bg-teal">Name</th>
-                <th className="px-4 py-2 font-medium bg-teal">Email</th>
-                <th className="px-4 py-2 font-medium bg-teal">Role</th>
-                <th className="px-4 py-2 font-medium bg-teal">Joined</th>
+              <tr className="bg-gray-50 text-gray-700 text-left text-[13px] font-semibold uppercase tracking-wider border-b-2 border-teal">
+                <th className="px-4 py-2 font-medium">Name</th>
+                <th className="px-4 py-2 font-medium">Email</th>
+                <th className="px-4 py-2 font-medium">Role</th>
+                <th className="px-4 py-2 font-medium">Joined</th>
               </tr>
             </thead>
             <tbody>
@@ -74,10 +74,10 @@ export default async function AdminUsersPage() {
           <div className="bg-white rounded-lg overflow-hidden shadow-sm">
             <table className="w-full">
               <thead>
-                <tr className="bg-teal text-white text-left text-xs uppercase tracking-wider">
-                  <th className="px-4 py-2 font-medium bg-teal">Email</th>
-                  <th className="px-4 py-2 font-medium bg-teal">Invited</th>
-                  <th className="px-4 py-2 font-medium bg-teal">Invite Link</th>
+                <tr className="bg-gray-50 text-gray-700 text-left text-[13px] font-semibold uppercase tracking-wider border-b-2 border-teal">
+                  <th className="px-4 py-2 font-medium">Email</th>
+                  <th className="px-4 py-2 font-medium">Invited</th>
+                  <th className="px-4 py-2 font-medium">Invite Link</th>
                 </tr>
               </thead>
               <tbody>

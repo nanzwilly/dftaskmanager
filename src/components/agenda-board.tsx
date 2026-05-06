@@ -227,17 +227,23 @@ function DateGroup({
   items: AgendaItem[];
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden border-l-2 border-teal">
       {/* Date Header */}
-      <div className="bg-teal px-4 py-2 flex justify-between items-center">
-        <h2 className="font-semibold text-white text-xs uppercase tracking-wider">
+      <div className="bg-white px-4 py-2 flex justify-between items-center border-b border-gray-100">
+        <h2 className="flex items-center gap-2 font-semibold text-gray-700 text-xs uppercase tracking-wider">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-teal">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="M16 2v4" />
+            <path d="M8 2v4" />
+            <path d="M3 10h18" />
+          </svg>
           {formatDate(dateEntry.date)}
         </h2>
         <form action={deleteAgendaDateAction}>
           <input type="hidden" name="id" value={dateEntry.id} />
           <button
             type="submit"
-            className="text-white/50 hover:text-white transition-colors"
+            className="text-gray-300 hover:text-red-500 transition-colors"
             title="Delete date and all items"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

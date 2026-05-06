@@ -167,7 +167,7 @@ export default async function DashboardPage({
 
   const tableHeader = (
     <thead>
-      <tr className="bg-teal text-white text-left text-xs uppercase tracking-wider">
+      <tr className="bg-gray-50 text-gray-700 text-left text-[13px] font-semibold uppercase tracking-wider border-b-2 border-teal">
         <SortableHeader label="Task" sortKey="title" width={taskColWidth} {...headerProps} />
         <SortableHeader label="Status" sortKey="status" {...headerProps} />
         <SortableHeader label="Owner" sortKey="owner" {...headerProps} />
@@ -176,7 +176,7 @@ export default async function DashboardPage({
         {showCompletedColumn && (
           <SortableHeader label="Completed" sortKey="completedAt" {...headerProps} />
         )}
-        <th className="px-4 py-2 font-medium bg-teal whitespace-nowrap">Actions</th>
+        <th className="px-4 py-2 font-medium whitespace-nowrap">Actions</th>
       </tr>
     </thead>
   );

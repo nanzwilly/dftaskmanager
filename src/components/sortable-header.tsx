@@ -32,15 +32,15 @@ export function SortableHeader({ label, sortKey, currentSort, currentDir, width 
 
   return (
     <th
-      className="px-4 py-2 font-medium cursor-pointer bg-teal hover:bg-teal-dark select-none transition-colors"
+      className="px-4 py-2 font-medium cursor-pointer hover:bg-gray-100 select-none transition-colors"
       style={width ? { width } : undefined}
       onClick={handleClick}
     >
       <span className="inline-flex items-center gap-1">
         {label}
         <span className="inline-flex flex-col text-[10px] leading-none gap-0.5 opacity-70">
-          <span className={isActive && currentDir === "asc" ? "text-white" : "text-white/40"}>&#9650;</span>
-          <span className={isActive && currentDir === "desc" ? "text-white" : "text-white/40"}>&#9660;</span>
+          <span className={isActive && currentDir === "asc" ? "text-teal" : "text-gray-300"}>&#9650;</span>
+          <span className={isActive && currentDir === "desc" ? "text-teal" : "text-gray-300"}>&#9660;</span>
         </span>
       </span>
     </th>

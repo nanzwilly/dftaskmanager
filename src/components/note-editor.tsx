@@ -39,7 +39,7 @@ function ToolbarButton({
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       title={title}
-      className={`inline-flex items-center justify-center w-8 h-8 rounded text-sm font-medium transition-colors ${
+      className={`inline-flex items-center justify-center w-7 h-7 rounded text-xs font-medium transition-colors ${
         active
           ? "bg-teal text-white"
           : "text-gray-600 hover:bg-gray-100"
@@ -81,7 +81,7 @@ export function NoteEditor({ initialContent }: NoteEditorProps) {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: "prose prose-sm max-w-none px-6 py-4 min-h-[calc(100vh-280px)] focus:outline-none",
+        class: "prose prose-sm max-w-none px-6 py-4 min-h-[calc(100vh-280px)] focus:outline-none text-[13px]",
       },
     },
     onUpdate: ({ editor }) => {
@@ -169,7 +169,7 @@ export function NoteEditor({ initialContent }: NoteEditorProps) {
           active={editor.isActive("bulletList")}
           title="Bullet List"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
             <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
           </svg>
@@ -179,7 +179,7 @@ export function NoteEditor({ initialContent }: NoteEditorProps) {
           active={editor.isActive("orderedList")}
           title="Numbered List"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="10" y1="6" x2="21" y2="6" /><line x1="10" y1="12" x2="21" y2="12" /><line x1="10" y1="18" x2="21" y2="18" />
             <path d="M4 6h1v4" /><path d="M4 10h2" /><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
           </svg>
@@ -195,7 +195,7 @@ export function NoteEditor({ initialContent }: NoteEditorProps) {
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => editor.chain().focus().setColor(color.value).run()}
             title={color.name}
-            className={`w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 ${
+            className={`w-5 h-5 rounded-full border-2 transition-transform hover:scale-110 ${
               editor.isActive("textStyle", { color: color.value })
                 ? "border-teal scale-110"
                 : "border-gray-200"
