@@ -32,7 +32,7 @@ export function SortableHeader({ label, sortKey, currentSort, currentDir, width 
 
   return (
     <th
-      className="px-4 py-3 font-medium cursor-pointer bg-teal hover:bg-teal-dark select-none transition-colors"
+      className="px-4 py-2 font-medium cursor-pointer bg-teal hover:bg-teal-dark select-none transition-colors"
       style={width ? { width } : undefined}
       onClick={handleClick}
     >

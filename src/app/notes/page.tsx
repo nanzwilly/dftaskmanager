@@ -21,7 +21,7 @@ export default async function NotesPage() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Notes</h1>
+          <h1 className="text-xl font-semibold text-gray-800">Notes</h1>
         </div>
         <NoteEditor initialContent={note?.content || ""} />
       </main>

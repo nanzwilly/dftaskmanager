@@ -22,12 +22,12 @@ export function InviteForm() {
           type="email"
           required
           placeholder="colleague@example.com"
-          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal outline-none text-sm"
+          className="flex-1 px-3 py-1.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal focus:border-teal outline-none text-xs"
         />
         <button
           type="submit"
           disabled={pending}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="px-3 py-1.5 bg-teal text-white rounded-md text-xs font-medium hover:bg-teal-dark disabled:opacity-50 transition-colors"
         >
           {pending ? "Sending..." : "Send Invite"}
         </button>

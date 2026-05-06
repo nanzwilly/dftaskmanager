@@ -27,11 +27,11 @@ export function ProfileDropdown({ name, role }: ProfileDropdownProps) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 text-sm text-white/90 hover:text-white transition-colors"
+        className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 transition-colors"
       >
         <span>{name}</span>
         {role === "admin" && (
-          <span className="text-xs bg-white/20 text-white px-1.5 py-0.5 rounded">
+          <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
             Admin
           </span>
         )}

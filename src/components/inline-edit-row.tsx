@@ -68,25 +68,25 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
             rowIndex % 2 === 1 ? "bg-gray-50/50" : "bg-white"
           }`}
         >
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <button
               onClick={() => setShowDetail(true)}
-              className="text-sm font-medium text-gray-800 hover:text-teal transition-colors text-left"
+              className="text-[13px] font-medium text-gray-800 hover:text-teal transition-colors text-left"
             >
               {task.title}
             </button>
           </td>
-          <td className="px-4 py-3">
+          <td className="px-4 py-2">
             <span
-              className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${statusInfo.color}`}
+              className={`inline-block text-[11px] font-medium px-2 py-0.5 rounded-full ${statusInfo.color}`}
             >
               {statusInfo.label}
             </span>
           </td>
-          <td className="px-4 py-3 text-sm text-gray-600">
+          <td className="px-4 py-2 text-xs text-gray-600">
             {task.ownerName || "Unassigned"}
           </td>
-          <td className="px-4 py-3 text-sm">
+          <td className="px-4 py-2 text-xs">
             {task.dueDate ? (
               <span className={isOverdue ? "text-red-600" : "text-gray-600"}>
                 {formatDate(task.dueDate)}
@@ -95,22 +95,22 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
               <span className="text-gray-400">No date</span>
             )}
           </td>
-          <td className="px-4 py-3 text-sm text-gray-500">
+          <td className="px-4 py-2 text-xs text-gray-500">
             {formatDate(task.createdAt)}
           </td>
           {showCompletedColumn && (
-            <td className="px-4 py-3 text-sm text-gray-500">
+            <td className="px-4 py-2 text-xs text-gray-500">
               {task.completedAt ? formatDate(task.completedAt) : "—"}
             </td>
           )}
-          <td className="px-4 py-3 whitespace-nowrap">
-            <div className="flex items-center gap-3">
+          <td className="px-4 py-2 whitespace-nowrap">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setEditing(true)}
-                className="inline-flex items-center justify-center w-8 h-8 rounded text-gray-400 hover:text-teal hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center justify-center w-7 h-7 rounded text-gray-400 hover:text-teal hover:bg-gray-100 transition-colors"
                 title="Edit"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                   <path d="m15 5 4 4" />
                 </svg>
@@ -119,10 +119,10 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
                 <input type="hidden" name="id" value={task.id} />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center w-8 h-8 rounded text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                  className="inline-flex items-center justify-center w-7 h-7 rounded text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                   title="Delete"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 6h18" />
                     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                     <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -207,20 +207,20 @@ export function InlineEditRow({ task, owners, statuses, rowIndex, showCompletedC
                     <button
                       type="submit"
                       disabled={isPending}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors disabled:opacity-50"
+                      className="inline-flex items-center justify-center w-7 h-7 rounded text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors disabled:opacity-50"
                       title="Save"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditing(false)}
-                      className="inline-flex items-center justify-center w-8 h-8 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                      className="inline-flex items-center justify-center w-7 h-7 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
                       title="Cancel"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
                       </svg>

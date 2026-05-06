@@ -42,17 +42,17 @@ function AddDateForm() {
         name="date"
         type="date"
         required
-        className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+        className="text-xs border border-gray-200 rounded-md px-2.5 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
       />
       <button
         type="submit"
         disabled={isPending}
-        className="px-4 py-2 bg-teal text-white rounded-lg text-sm font-medium hover:bg-teal-dark transition-colors disabled:opacity-50"
+        className="px-3 py-1 bg-teal text-white rounded-md text-xs font-medium hover:bg-teal-dark transition-colors disabled:opacity-50"
       >
         {isPending ? "Adding..." : "+ Add Date"}
       </button>
       {state?.error && (
-        <span className="text-sm text-red-500">{state.error}</span>
+        <span className="text-xs text-red-500">{state.error}</span>
       )}
     </form>
   );
@@ -80,15 +80,15 @@ function AddItemForm({ agendaDateId }: { agendaDateId: number }) {
         type="text"
         placeholder="Add discussion point..."
         required
-        className="flex-1 text-sm border border-gray-200 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+        className="flex-1 text-xs border border-gray-200 rounded-md px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
       />
       <button
         type="submit"
         disabled={isPending}
-        className="inline-flex items-center justify-center w-8 h-8 rounded text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors disabled:opacity-50"
+        className="inline-flex items-center justify-center w-7 h-7 rounded text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors disabled:opacity-50"
         title="Add"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
@@ -129,7 +129,7 @@ function ChecklistItem({ item }: { item: AgendaItem }) {
             defaultValue={item.text}
             autoFocus
             required
-            className="flex-1 text-sm border border-gray-200 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+            className="flex-1 text-xs border border-gray-200 rounded-md px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
           />
           <button
             type="submit"
@@ -180,7 +180,7 @@ function ChecklistItem({ item }: { item: AgendaItem }) {
       </form>
 
       <span
-        className={`flex-1 text-sm ${
+        className={`flex-1 text-xs ${
           item.checked ? "line-through text-gray-400" : "text-gray-700"
         }`}
       >
@@ -229,8 +229,8 @@ function DateGroup({
   return (
     <div className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
       {/* Date Header */}
-      <div className="bg-teal px-4 py-3 flex justify-between items-center">
-        <h2 className="font-semibold text-white text-sm">
+      <div className="bg-teal px-4 py-2 flex justify-between items-center">
+        <h2 className="font-semibold text-white text-xs uppercase tracking-wider">
           {formatDate(dateEntry.date)}
         </h2>
         <form action={deleteAgendaDateAction}>
@@ -274,8 +274,8 @@ export function AgendaBoard({ dates, itemsByDateId }: AgendaBoardProps) {
 
       {dates.length === 0 ? (
         <div className="text-center py-16 text-gray-500">
-          <p className="text-lg mb-2">No agenda items yet</p>
-          <p className="text-sm">Add a date above to start building your meeting agenda.</p>
+          <p className="text-sm mb-2">No agenda items yet</p>
+          <p className="text-xs">Add a date above to start building your meeting agenda.</p>
         </div>
       ) : (
         dates.map((dateEntry) => (

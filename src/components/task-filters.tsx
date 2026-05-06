@@ -68,12 +68,12 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
 
   return (
     <div className="flex items-center gap-3 mb-4 flex-wrap">
-      <span className="text-sm font-medium text-gray-600">Filters:</span>
+      <span className="text-xs font-medium text-gray-600">Filters:</span>
 
       <select
         value={currentOwner}
         onChange={(e) => updateFilter("owner", e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+        className="text-xs border border-gray-200 rounded-md px-2.5 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
       >
         <option value="">All Owners</option>
         {owners.map((owner) => (
@@ -86,7 +86,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
       <select
         value={currentStatus}
         onChange={(e) => updateFilter("status", e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+        className="text-xs border border-gray-200 rounded-md px-2.5 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
       >
         <option value="">All Statuses</option>
         {statuses.map((s) => (
@@ -101,7 +101,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
           <select
             value={currentDateRange}
             onChange={(e) => updateDateRange(e.target.value)}
-            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+            className="text-xs border border-gray-200 rounded-md px-2.5 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
             title={`Filter by ${dateRangeLabel} date`}
           >
             <option value="">All Time</option>
@@ -118,7 +118,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
                 type="date"
                 value={currentDateFrom}
                 onChange={(e) => updateFilter("dateFrom", e.target.value)}
-                className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+                className="text-xs border border-gray-200 rounded-md px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
                 title="From"
               />
               <span className="text-xs text-gray-400">to</span>
@@ -126,7 +126,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
                 type="date"
                 value={currentDateTo}
                 onChange={(e) => updateFilter("dateTo", e.target.value)}
-                className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
+                className="text-xs border border-gray-200 rounded-md px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal"
                 title="To"
               />
             </div>
@@ -137,7 +137,7 @@ export function TaskFilters({ owners, statuses, dateRanges = [] }: TaskFiltersPr
       {hasFilters && (
         <button
           onClick={clearFilters}
-          className="text-sm text-gray-500 hover:text-gray-700 underline"
+          className="text-xs text-gray-500 hover:text-gray-700 underline"
         >
           Clear
         </button>

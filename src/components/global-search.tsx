@@ -103,7 +103,7 @@ export function GlobalSearch() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="absolute left-2.5 text-white/50 pointer-events-none"
+          className="absolute left-2.5 text-gray-400 pointer-events-none"
         >
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -114,7 +114,7 @@ export function GlobalSearch() {
           onChange={handleChange}
           onFocus={() => results && setOpen(true)}
           placeholder="Search..."
-          className="w-44 pl-8 pr-3 py-1.5 text-sm bg-white/15 text-white placeholder-white/50 rounded-lg border border-white/20 focus:outline-none focus:bg-white/25 focus:border-white/40 transition-colors"
+          className="w-44 pl-8 pr-3 py-1 text-xs bg-gray-100 text-gray-700 placeholder-gray-400 rounded-md border border-transparent focus:outline-none focus:bg-white focus:border-gray-300 transition-colors"
         />
       </div>
 
