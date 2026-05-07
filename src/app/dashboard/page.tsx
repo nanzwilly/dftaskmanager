@@ -9,7 +9,7 @@ import { InlineEditRow } from "@/components/inline-edit-row";
 import { SortableHeader } from "@/components/sortable-header";
 import { CreateTaskModal } from "@/components/create-task-modal";
 
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 50;
 
 const statusOptions = [
   { value: "todo", label: "Not Started", color: "bg-gray-100 text-gray-600" },
@@ -186,7 +186,9 @@ export default async function DashboardPage({
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-semibold text-gray-800">Tasks</h1>
+          <h1 className="text-xl font-semibold text-gray-800">
+            Tasks <span className="ml-1 text-sm font-medium text-gray-400">({totalItems})</span>
+          </h1>
           <CreateTaskModal owners={allUsers} />
         </div>
 
