@@ -30,40 +30,34 @@ export function Pagination({ totalItems, pageSize, currentPage }: PaginationProp
   if (totalItems <= pageSize) return null;
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-600">
-      <span>
-        Showing {(currentPage - 1) * pageSize + 1}–{Math.min(currentPage * pageSize, totalItems)} of{" "}
-        {totalItems}
-      </span>
-      <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 text-xs">
+      <button
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage <= 1}
+        className="px-2 py-0.5 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        &lsaquo;
+      </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
         <button
-          onClick={() => goToPage(currentPage - 1)}
-          disabled={currentPage <= 1}
-          className="px-2.5 py-1 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+          key={page}
+          onClick={() => goToPage(page)}
+          className={`px-2 py-0.5 rounded border ${
+            page === currentPage
+              ? "bg-teal text-white border-teal"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
         >
-          &lsaquo;
+          {page}
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => goToPage(page)}
-            className={`px-2.5 py-1 rounded border ${
-              page === currentPage
-                ? "bg-teal text-white border-teal"
-                : "border-gray-200 hover:bg-gray-50"
-            }`}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          onClick={() => goToPage(currentPage + 1)}
-          disabled={currentPage >= totalPages}
-          className="px-2.5 py-1 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          &rsaquo;
-        </button>
-      </div>
+      ))}
+      <button
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage >= totalPages}
+        className="px-2 py-0.5 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        &rsaquo;
+      </button>
     </div>
   );
 }

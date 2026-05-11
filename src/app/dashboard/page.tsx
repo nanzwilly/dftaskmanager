@@ -186,9 +186,7 @@ export default async function DashboardPage({
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-semibold text-gray-800">
-            Tasks <span className="ml-1 text-sm font-medium text-gray-400">({totalItems})</span>
-          </h1>
+          <h1 className="text-xl font-semibold text-gray-800">Tasks</h1>
           <CreateTaskModal owners={allUsers} />
         </div>
 
@@ -231,11 +229,16 @@ export default async function DashboardPage({
               </tbody>
             </table>
 
-            <Pagination
-              totalItems={totalItems}
-              pageSize={PAGE_SIZE}
-              currentPage={currentPage}
-            />
+            <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
+              <span className="text-xs text-gray-500">
+                {totalItems} {totalItems === 1 ? "task" : "tasks"}
+              </span>
+              <Pagination
+                totalItems={totalItems}
+                pageSize={PAGE_SIZE}
+                currentPage={currentPage}
+              />
+            </div>
           </div>
         )}
       </main>
